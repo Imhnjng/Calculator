@@ -60,8 +60,10 @@ class ViewController: UIViewController {
         if task.done {
             print("완료 상태")
             cell.textLabel?.attributedText = task.title.strikeThrough()
+//            cell.textLabel?.textColor = .red
         } else {
             print("미완료 상태")
+//            cell.textLabel?.textColor = .green
             cell.textLabel?.attributedText = NSAttributedString(string: task.title)
         }
     }
@@ -116,27 +118,20 @@ extension ViewController: UITableViewDataSource {
 //    }
 }
 
-
+// 삭제
 extension ViewController: UITableViewDelegate {
     
-//    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-//        .delete
-//    }
-//    
-//    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
-//        print(indexPath.row)
-//    }
-//    
-//    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-//        print(indexPath?.row)
-//    }
-//    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        var task = list[indexPath.row]
-//        task.done = !task.done
-//        tableView.reloadData()
-//    }
+    // 특정 indexpath의 로우의 editingStyle을 설정
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .delete
+    }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        // 배열에서 indexPath.row에 해당하는 값 제거하기
+        list.remove(at: indexPath.row)
+        // 해당 cell을 tableview에서 없애기(UI적 요소)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+    }
 }
 
 extension String {
@@ -144,6 +139,9 @@ extension String {
             let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: self)
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, 
                             value: NSUnderlineStyle.single.rawValue,
+                            range: NSMakeRange(0, attributeString.length))
+            attributeString.addAttribute(NSAttributedString.Key.foregroundColor,
+                            value: UIColor.gray,
                             range: NSMakeRange(0, attributeString.length))
             return attributeString
     }
