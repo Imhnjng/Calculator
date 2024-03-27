@@ -8,6 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+   
     var list = [Task]()
     
     override func viewDidLoad() {
@@ -15,6 +16,11 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // Drag & Drop 기능을 위한 부분
+        tableView.dragInteractionEnabled = true // 드래그 지원 bool 값: true
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
         
 //        for i in 0...0 {
 //            self.addToDoItem(title: String(i))
@@ -109,19 +115,27 @@ extension ViewController: UITableViewDataSource {
             mySwitch.isOn = task.done
         }
         
+        // 셀 선택시 회색으로 남아 있는 경우
+//        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        
         return cell
     }
     
+    // 셀 순서 바꾸기. 애니메이팅
+        func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+            print("\(sourceIndexPath.row) -> \(destinationIndexPath.row)")
+            let moveCell = self.list[sourceIndexPath.row]
+            self.list.remove(at: sourceIndexPath.row)
+            self.list.insert(moveCell, at: destinationIndexPath.row)
+        }
     
-//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//        true
-//    }
 }
 
-// 삭제
+
+
 extension ViewController: UITableViewDelegate {
-    
-    // 특정 indexpath의 로우의 editingStyle을 설정
+    // 삭제
+    // 특정 indexpath의 로우의 editingStyle을 설정 .delete
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .delete
     }
@@ -132,14 +146,45 @@ extension ViewController: UITableViewDelegate {
         // 해당 cell을 tableview에서 없애기(UI적 요소)
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
+    
+    // 셀 선택 후 회색으로 선택 된 셀 원래대로 되돌리기
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
+
+
+// 드래그 앤 드랍 이동
+//참고자료 https://yoojin99.github.io/app/TableView-%EB%93%9C%EB%9E%98%EA%B7%B8-%EB%93%9C%EB%A1%AD/
+extension ViewController: UITableViewDragDelegate {
+func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        return [UIDragItem(itemProvider: NSItemProvider())]
+    }
+}
+ 
+extension ViewController: UITableViewDropDelegate {
+    
+    //셀의 변경 위치를 시각적으로 보여줌. 옵션이고 구현 권장하는 메소드.
+//    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+//        if session.localDragSession != nil {
+//            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+//        }
+//        return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+//    }
+    
+    // 사용자가 스크린에서 손가락을 뗄 때 호출됨
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) { }
+}
+
 
 extension String {
     func strikeThrough() -> NSAttributedString {
             let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: self)
-            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, 
+            //취소선
+            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle,
                             value: NSUnderlineStyle.single.rawValue,
                             range: NSMakeRange(0, attributeString.length))
+            //텍스트 회색으로 변경
             attributeString.addAttribute(NSAttributedString.Key.foregroundColor,
                             value: UIColor.gray,
                             range: NSMakeRange(0, attributeString.length))
