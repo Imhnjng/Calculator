@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         
         // Drag & Drop 기능을 위한 부분
-        tableView.dragInteractionEnabled = true // 드래그 지원 bool 값: true
+        tableView.dragInteractionEnabled = true // 드래그 지원 여부: bool
         tableView.dragDelegate = self
         tableView.dropDelegate = self
         
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
             guard let text = alert.textFields?[0].text else { return }
             print("할 일 적음 \(text)")
             self?.addToDoItem(title: text)
-            print("할 일 추가됨")
+            print("할 일 추가 중")
         })
         
         let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in
@@ -79,13 +79,12 @@ class ViewController: UIViewController {
         
         // data update
         list[sender.tag].done = sender.isOn
+        print("list[sender.tag] \(list[sender.tag])")
         
         // cell update
         if let cell = sender.superview as? UITableViewCell {
             cellTitleLabelUpdate(cell, list[sender.tag])
         }
-        
-//        tableView.reloadData()
     }
 }
 
@@ -106,6 +105,7 @@ extension ViewController: UITableViewDataSource {
             let mySwitch = UISwitch()
             mySwitch.addTarget(self, action: #selector(didChangeSwitch(_ :)), for: .valueChanged)
             mySwitch.tag = indexPath.row
+            
             mySwitch.isOn = task.done
             cell.accessoryView = mySwitch
         }
@@ -114,9 +114,6 @@ extension ViewController: UITableViewDataSource {
             mySwitch.tag = indexPath.row
             mySwitch.isOn = task.done
         }
-        
-        // 셀 선택시 회색으로 남아 있는 경우
-//        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         
         return cell
     }
@@ -139,12 +136,10 @@ extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .delete
     }
-    
+    // 스와이프 하면 delect 버튼 생성
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        // 배열에서 indexPath.row에 해당하는 값 제거하기
-        list.remove(at: indexPath.row)
-        // 해당 cell을 tableview에서 없애기(UI적 요소)
-        tableView.deleteRows(at: [indexPath], with: .fade)
+        list.remove(at: indexPath.row)  // 배열에서 indexPath.row에 해당하는 값 제거하기
+        tableView.deleteRows(at: [indexPath], with: .fade) // 해당 cell을 tableview에서 없애기(UI적 요소)
     }
     
     // 셀 선택 후 회색으로 선택 된 셀 원래대로 되돌리기
@@ -154,7 +149,7 @@ extension ViewController: UITableViewDelegate {
 }
 
 
-// 드래그 앤 드랍 이동
+// 할 일 순서 바꾸기 기능
 //참고자료 https://yoojin99.github.io/app/TableView-%EB%93%9C%EB%9E%98%EA%B7%B8-%EB%93%9C%EB%A1%AD/
 extension ViewController: UITableViewDragDelegate {
 func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
@@ -165,12 +160,12 @@ func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSessio
 extension ViewController: UITableViewDropDelegate {
     
     //셀의 변경 위치를 시각적으로 보여줌. 옵션이고 구현 권장하는 메소드.
-//    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-//        if session.localDragSession != nil {
-//            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-//        }
-//        return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
-//    }
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        if session.localDragSession != nil {
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        }
+        return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+    }
     
     // 사용자가 스크린에서 손가락을 뗄 때 호출됨
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) { }
