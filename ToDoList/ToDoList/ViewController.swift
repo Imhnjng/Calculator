@@ -22,12 +22,27 @@ class ViewController: UIViewController {
         tableView.dragDelegate = self
         tableView.dropDelegate = self
         
-//        for i in 0...0 {
-//            self.addToDoItem(title: String(i))
+//        for i in 0...2 {
+////            self.addToDoItem(title: String(i))
+//            self.list.append(Task(title: String(i), done: false))
 //        }
 
+        loadData()
 //        tableView.setEditing(true, animated: true)
         
+        
+        //
+        // apple
+        //
+//        if tableView.dataSource.conforms(to: UITableViewDataSource) {
+//            let sectionCount = tableView.dataSource?.numberOfSections?(in: tableView)
+//            for i in 0...sectionCount {
+//                let rowCount = tableView.dataSource?.tableView(tableView, numberOfRowsInSection: i)
+//                for a in 0...rowCount {
+//                    tableView.dataSource?.tableView(tableView, cellForRowAt: IndexPath(index: a))
+//                }
+//            }
+//        }
     }
 
     @IBOutlet weak var tableView: UITableView!
@@ -54,9 +69,64 @@ class ViewController: UIViewController {
 
         self.present(alert, animated: true) { print( "alert 창 켜짐" )} //alert 창 띄워주는 코드
     }
+    
+    @IBAction func onTestButtonClick(_ sender: UIButton) {
+        switch sender.tag {
+        case 0:
+            UserDefaults.standard.setValue("test", forKey: "A")
+            let task = Task(title: "abc", done: true)
+            UserDefaults.standard.setValue(task, forKey: "task")
+        case 1:
+            UserDefaults.standard.removeObject(forKey: "A")
+            UserDefaults.standard.removeObject(forKey: "ToDoList")
+            UserDefaults.standard.synchronize()
+        case 2:
+            let data = UserDefaults.standard.dictionaryRepresentation()
+            print(data)
+        default:
+            break
+        }
+    }
+    
+    func loadData() {
+        print("loadData")
+        guard let toDoList = UserDefaults.standard.value(forKey: "ToDoList") as? [[String : Any]] else { return }
+        
+//        self.list.removeAll()
+//        for todo in toDoList {
+//            if let title = todo["title"] as? String, let done = todo["done"] as? Bool {
+//                let task = Task(title: title, done: done)
+//                self.list.append(task)
+//            }
+//        }
+        
+        self.list = toDoList.compactMap { todo -> Task? in
+            guard let title = todo["title"] as? String, let done = todo["done"] as? Bool else { return nil }
+            return Task(title: title, done: done)
+        }
+    }
+    
+    func saveData() {
+        print("saveData")
+//        var toDoList: [[String: Any]] = []
+//        for task in self.list {
+//            let dic = [
+//                "title": task.title,
+//                "done": task.done
+//            ] as [String : Any]
+//            toDoList.append(dic)
+//        }
+        let toDoList = self.list.map { task in
+            ["title": task.title, "done": task.done]
+        }
+        UserDefaults.standard.setValue(toDoList, forKey: "ToDoList")
+        UserDefaults.standard.synchronize()
+    }
+    
         
     func addToDoItem(title: String) {
         self.list.append(Task(title: title, done: false)) //리스트에 할 일 추가해줌
+        saveData()
         print("리스트에 할 일 추가")
         self.tableView.reloadData() //추가한 리스트를 보여줌
         print("할 일 추가 후 reloadData")
@@ -75,16 +145,20 @@ class ViewController: UIViewController {
     }
     
     @objc func didChangeSwitch(_ sender: UISwitch) {
-        print("didChangeSwitch \(sender.tag)")
+        print("didChangeSwitch \(sender)")
+        guard let cell = sender.superview as? UITableViewCell else { return }
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        
+        print("cell \(cell)")
+        print("indexPath \(indexPath)")
         
         // data update
-        list[sender.tag].done = sender.isOn
-        print("list[sender.tag] \(list[sender.tag])")
+        list[indexPath.row].done = sender.isOn
+        print("list[indexPath.row] \(list[indexPath.row])")
+        saveData()
         
         // cell update
-        if let cell = sender.superview as? UITableViewCell {
-            cellTitleLabelUpdate(cell, list[sender.tag])
-        }
+        cellTitleLabelUpdate(cell, list[indexPath.row])
     }
 }
 
@@ -99,19 +173,20 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) //셀 재사용
         let task = list[indexPath.row] //list 섹션의 행
         cellTitleLabelUpdate(cell, task)
+        print("@@@@@ \(indexPath.row) \(task.done)")
         
         if cell.accessoryView == nil {
             print("new switch")
             let mySwitch = UISwitch()
             mySwitch.addTarget(self, action: #selector(didChangeSwitch(_ :)), for: .valueChanged)
-            mySwitch.tag = indexPath.row
+//            mySwitch.tag = indexPath.row
             
             mySwitch.isOn = task.done
             cell.accessoryView = mySwitch
         }
         else if let mySwitch = cell.accessoryView as? UISwitch {
             print("recycle switch \(mySwitch)")
-            mySwitch.tag = indexPath.row
+//            mySwitch.tag = indexPath.row
             mySwitch.isOn = task.done
         }
         
@@ -119,12 +194,14 @@ extension ViewController: UITableViewDataSource {
     }
     
     // 셀 순서 바꾸기. 애니메이팅
-        func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-            print("\(sourceIndexPath.row) -> \(destinationIndexPath.row)")
-            let moveCell = self.list[sourceIndexPath.row]
-            self.list.remove(at: sourceIndexPath.row)
-            self.list.insert(moveCell, at: destinationIndexPath.row)
-        }
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        print("\(sourceIndexPath.row) -> \(destinationIndexPath.row)")
+        let moveCell = self.list[sourceIndexPath.row]
+        self.list.remove(at: sourceIndexPath.row)
+        self.list.insert(moveCell, at: destinationIndexPath.row)
+        saveData()
+        tableView.reloadData()
+    }
     
 }
 
@@ -139,6 +216,7 @@ extension ViewController: UITableViewDelegate {
     // 스와이프 하면 delect 버튼 생성
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         list.remove(at: indexPath.row)  // 배열에서 indexPath.row에 해당하는 값 제거하기
+        saveData()
         tableView.deleteRows(at: [indexPath], with: .fade) // 해당 cell을 tableview에서 없애기(UI적 요소)
     }
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Task {
+struct Task : Codable {
 //    var id: Int // 고유값 id (Int) - var id: Int와 같은 식으로 구성할 수 있겠죠!
     let title: String // 타이틀. 할 일 내용
     var done: Bool // 완료 여부
