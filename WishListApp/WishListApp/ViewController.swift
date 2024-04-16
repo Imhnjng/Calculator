@@ -25,7 +25,7 @@ class ViewController: UIViewController {
             guard let currentProduct = self.currentProduct else { return }
             
             DispatchQueue.main.async {
-                print("3333 isMainThread: \(Thread.current.isMainThread) name: \(Thread.current.name)")
+//                print("3333 isMainThread: \(Thread.current.isMainThread) name: \(Thread.current.name)")
                 self.productImage.image = nil
                 self.titleLabel.text = currentProduct.title
                 self.descriptionLabel.text = currentProduct.description
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             }
             
             DispatchQueue.global().async { [weak self] in
-                print("4444 isMainThread: \(Thread.current.isMainThread) name: \(Thread.current.name)")
+//                print("4444 isMainThread: \(Thread.current.isMainThread) name: \(Thread.current.name)")
                 if let data = try? Data(contentsOf: currentProduct.thumbnail), let image = UIImage(data: data) {
                     DispatchQueue.main.async { self?.productImage.image = image }
                 }
@@ -73,10 +73,10 @@ class ViewController: UIViewController {
         let productID = Int.random(in: 1...100) // 1에서 100 사이의 랜덤 숫자 생성
         
         if let url = URL(string: "https://dummyjson.com/products/\(productID)") {
-            print("isMainThread: \(Thread.current.isMainThread) name: \(Thread.current.name)")
+//            print("isMainThread: \(Thread.current.isMainThread) name: \(Thread.current.name)")
             // URLSessionDataTask를 사용하여 비동기적으로 데이터 요청
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-                print("2222 isMainThread: \(Thread.current.isMainThread) name: \(Thread.current.name)")
+//                print("2222 isMainThread: \(Thread.current.isMainThread) name: \(Thread.current.name)")
                 if let error = error {
                     print("Error: \(error)")
                 } else if let data = data {

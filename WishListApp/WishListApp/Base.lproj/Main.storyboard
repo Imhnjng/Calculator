@@ -29,64 +29,81 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8th-WT-ggQ">
-                                <rect key="frame" x="20" y="584" width="353" height="19.333333333333371"/>
+                                <rect key="frame" x="20" y="583.66666666666663" width="353" height="19.333333333333371"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lre-y7-d3D">
-                                <rect key="frame" x="20" y="763" width="353" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="다른상품보기"/>
-                                <connections>
-                                    <action selector="skipButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jI8-ov-kgl"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Spt-l9-aU3">
-                                <rect key="frame" x="20" y="720" width="353" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="위시리스트 보기">
-                                    <color key="baseBackgroundColor" systemColor="systemPinkColor"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="wishListButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dxD-oQ-H0b"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="YZY-Le-798">
+                                <rect key="frame" x="0.0" y="768" width="393" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lre-y7-d3D">
+                                        <rect key="frame" x="0.0" y="0.0" width="111" height="50"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" image="arrow.clockwise" catalog="system">
+                                            <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="skipButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jI8-ov-kgl"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O47-K5-gYF">
+                                        <rect key="frame" x="141" y="0.0" width="111" height="50"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" image="cart" catalog="system" title="">
+                                            <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="saveProductButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kaY-LM-c9D"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Spt-l9-aU3">
+                                        <rect key="frame" x="282" y="0.0" width="111" height="50"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" image="list.bullet" catalog="system">
+                                            <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="wishListButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dxD-oQ-H0b"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Llr-am-IKI"/>
+                                </constraints>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lhH-aF-TEw">
-                                <rect key="frame" x="20" y="552" width="43" height="22"/>
+                                <rect key="frame" x="20" y="552" width="43" height="21.666666666666629"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O47-K5-gYF">
-                                <rect key="frame" x="20" y="677" width="353" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="위시리스트 담기">
-                                    <color key="baseBackgroundColor" systemColor="systemGreenColor"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="saveProductButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kaY-LM-c9D"/>
-                                </connections>
-                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A10-BU-nJh">
+                                <rect key="frame" x="0.0" y="818" width="393" height="34"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zDr-Bu-DTV" secondAttribute="trailing" constant="20" id="0n8-Ca-80j"/>
                             <constraint firstItem="8th-WT-ggQ" firstAttribute="top" secondItem="lhH-aF-TEw" secondAttribute="bottom" constant="10" id="1hp-l4-uuq"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="lre-y7-d3D" secondAttribute="bottom" constant="20" id="GeQ-mg-UK9"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="lre-y7-d3D" secondAttribute="trailing" constant="20" id="Ikq-zx-4VB"/>
+                            <constraint firstAttribute="trailing" secondItem="A10-BU-nJh" secondAttribute="trailing" id="4U0-YT-CeG"/>
+                            <constraint firstAttribute="trailing" secondItem="YZY-Le-798" secondAttribute="trailing" id="CCR-zu-uPE"/>
+                            <constraint firstItem="A10-BU-nJh" firstAttribute="top" secondItem="YZY-Le-798" secondAttribute="bottom" id="Ean-09-MK6"/>
                             <constraint firstItem="8th-WT-ggQ" firstAttribute="leading" secondItem="zDr-Bu-DTV" secondAttribute="leading" id="KVQ-ct-ixy"/>
+                            <constraint firstItem="YZY-Le-798" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="KWi-OR-Gts"/>
                             <constraint firstItem="zDr-Bu-DTV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Pat-PI-Flv"/>
                             <constraint firstItem="lhH-aF-TEw" firstAttribute="top" secondItem="zDr-Bu-DTV" secondAttribute="bottom" constant="10" id="ZRJ-i8-lqJ"/>
+                            <constraint firstAttribute="bottom" secondItem="A10-BU-nJh" secondAttribute="bottom" id="aGe-1v-ZcL"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="8th-WT-ggQ" secondAttribute="trailing" constant="20" id="ana-d7-zp0"/>
                             <constraint firstItem="2iS-Pe-gK2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="fCs-GP-3hW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="YZY-Le-798" secondAttribute="bottom" id="fjU-ta-mLB"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2iS-Pe-gK2" secondAttribute="trailing" id="fqy-ij-je9"/>
                             <constraint firstItem="zDr-Bu-DTV" firstAttribute="top" secondItem="2iS-Pe-gK2" secondAttribute="bottom" constant="10" id="ksj-EE-Q4k"/>
-                            <constraint firstItem="lre-y7-d3D" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="lpn-5N-c4g"/>
                             <constraint firstItem="2iS-Pe-gK2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="sKG-xy-6MP"/>
+                            <constraint firstItem="A10-BU-nJh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="yDz-1K-Vj1"/>
                             <constraint firstItem="lhH-aF-TEw" firstAttribute="leading" secondItem="zDr-Bu-DTV" secondAttribute="leading" id="zIZ-VV-ztG"/>
                         </constraints>
                     </view>
@@ -162,14 +179,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.clockwise" catalog="system" width="113" height="128"/>
+        <image name="cart" catalog="system" width="128" height="102"/>
+        <image name="list.bullet" catalog="system" width="128" height="87"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
