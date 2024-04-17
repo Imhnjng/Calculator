@@ -31,6 +31,7 @@ class WishListViewController: UIViewController {
     
     // CoreData에서 상품 정보를 불러와, productList 변수에 저장합니다.
     private func setProductList() {
+        print("setProductList")
         guard let context = self.persistentContainer?.viewContext else { return }
     
         let request = Product.fetchRequest()
@@ -43,6 +44,7 @@ class WishListViewController: UIViewController {
     
     // Table View Refresh
     func initRefresh() {
+        print("initReefresh")
         refreshControl.addTarget(self, action: #selector(refreshTable(refresh: )), for: .valueChanged)
         tableView.refreshControl = refreshControl
     }
@@ -84,12 +86,16 @@ extension WishListViewController: UITableViewDelegate {
         
         // core data delete
         context.delete(productList[indexPath.row])
+        print("core data delete")
         try? context.save()
+        print("context save")
         
         // 배열에서 indexPath.row에 해당하는 값 제거하기
         productList.remove(at: indexPath.row)
+        print("indexPath.row remove")
         
         // 해당 cell을 tableview에서 없애기(UI적 요소)
         tableView.deleteRows(at: [indexPath], with: .fade)
+        print("remove tableview cell")
     }
 }

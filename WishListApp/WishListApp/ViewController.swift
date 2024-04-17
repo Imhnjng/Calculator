@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var scollView: UIScrollView!
     
     //     currentProduct가 set되면, imageView. titleLabel, descriptionLabel, priceLabel에 각각 적절한 값을 지정합니다.
     private var currentProduct: RemoteProduct? = nil {
@@ -41,15 +42,17 @@ class ViewController: UIViewController {
         }
     }
     
-   
+   let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         fetchRemoteProduct()
+        initRefresh()
     }
 
     @IBAction func skipButton(_ sender: Any) {
+        print("새로고침 버튼 눌림")
         fetchRemoteProduct()
     }
     
@@ -61,6 +64,7 @@ class ViewController: UIViewController {
     
     // 위시리스트 보기
     @IBAction func wishListButton(_ sender: Any) {
+        print("위시리스트 보기 버튼 클릭")
         guard let wichListVC = self.storyboard?.instantiateViewController(
               identifier: "WishListViewController"
             ) else { return }
@@ -99,6 +103,7 @@ class ViewController: UIViewController {
    
      //currentProduct를 가져와 Core Data에 저장합니다.
     private func saveWishProduct() {
+        print("coreData 저장")
         guard let context = self.persistentContainer?.viewContext else { return }
 
         guard let currentProduct = self.currentProduct else { return }
@@ -112,5 +117,22 @@ class ViewController: UIViewController {
         
         try? context.save()
     }
+    
+    func initRefresh() {
+        print("initRefresh")
+        refreshControl.addTarget(self, action: #selector(refreshMain(refresh: )), for: .valueChanged)
+            scollView.refreshControl = refreshControl
+    }
+    
+    @objc func refreshMain(refresh: UIRefreshControl) {
+           print("새로고침 시작")
+           
+           DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+               print("새로고침 끝")
+               self.fetchRemoteProduct()
+               refresh.endRefreshing()
+               
+           }
+       }
 }
 
